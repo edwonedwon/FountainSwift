@@ -8,4 +8,11 @@
             // results.
             XCTAssertEqual(FountainSwift().text, "Hello, World!")
         }
+        
+        func testParsing_emptyDocument_shouldReturnNone() {
+            let text = ""
+            let parser = MarkdownParser(text: text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [])
+        }
     }
