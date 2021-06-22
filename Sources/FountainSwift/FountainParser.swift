@@ -22,8 +22,7 @@ class FountainParser {
         var result: [FountainNode] = []
         // iterate the lexems/blocks until there are no more available
         while let blockText = lexer.next() {
-//            result += BlockParser(block).parse()
-            result.append(FountainNode.text(blockText))
+            result += FountainBlockParser(blockText).parse()
         }
         return result
     }

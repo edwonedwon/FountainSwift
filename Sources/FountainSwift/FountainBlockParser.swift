@@ -10,7 +10,7 @@ import Foundation
 class FountainBlockParser {
     let text: String
 
-    init(text: String) {
+    init(_ text: String) {
         self.text = text
     }
 
