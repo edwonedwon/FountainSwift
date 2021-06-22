@@ -42,6 +42,18 @@ class Lexer: IteratorProtocol {
         lexems[index]
     }
     
+    /// Returns the total lexems
+    var count: Int {
+        lexems.count
+    }
+    
+    func atIndex(_ index: Int) -> String? {
+        if (index < count ) {
+            return lexems[index]
+        }
+        return nil
+    }
+    
     /// Returns the currenttly selected lexem and moves the cursor to the next position
     func next() -> String? {
         guard !isAtEnd else {

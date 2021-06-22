@@ -16,11 +16,10 @@
             let parser = FountainParser(text)
             let nodes = parser.parse()
             XCTAssertEqual(nodes, [
-                .text("EXT. BRICK'S PATIO - DAY"),
-                .text("A gorgeous day.  The sun is shining.  But BRICK BRADDOCK, retired police detective, is sitting quietly, contemplating -- something."),
-                .text("The SCREEN DOOR slides open and DICK STEEL, his former partner and fellow retiree, emerges with two cold beers."),
-                .text("STEEL"),
-                .text("Beer's ready!"),
+                .sceneHeading("EXT. BRICK'S PATIO - DAY"),
+                .action("A gorgeous day.  The sun is shining.  But BRICK BRADDOCK, retired police detective, is sitting quietly, contemplating -- something."),
+                .action("The SCREEN DOOR slides open and DICK STEEL, his former partner and fellow retiree, emerges with two cold beers."),
+                .dialogue(Dialogue(character: "STEEL", dialogue: "Beer's ready!"))
             ])
         }
         
