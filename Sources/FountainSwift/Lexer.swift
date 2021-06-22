@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// separates a string of text into separate smaller strings
+/// based on the "separator" given
 class Lexer: IteratorProtocol {
     /// lexems to iterate
     private let lexems: [String]
