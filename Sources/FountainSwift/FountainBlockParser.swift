@@ -8,29 +8,53 @@
 import Foundation
 
 class FountainBlockParser {
-    let text: String
+    let block: String
+    let lexer: Lexer?
 
-    init(_ text: String) {
-        self.text = text
+    init(_ block: String) {
+        self.block = block
+        lexer = Lexer(raw: block, separator: "\n")
     }
 
     func parse() -> [FountainNode] {
-        guard let lexer = Lexer(raw: text, separator: "\n") else {
+        guard let lexer = lexer else {
             return []
         }
         var result: [FountainNode] = []
-        while let text = lexer.next() {
+        while let line = lexer.next() {
+//            print("lexer index: \(lexer.Index)")
+//            print("lexer count: \(lexer.count)")
+//            print("block: \(block)")
+//            print("line: \(line)")
+            
             // action - forced with ! check
-            if let val = text.isAction {
+            if let val = line.isAction {
                 result += [.action(val)]
                 continue
             }
             
-            // scene heading - if it has one of the prefixes
-            if let val = text.isSceneHeading {
+            if let val = line.isSceneHeading {
                 result += [.sceneHeading(val)]
                 continue
             }
+            
+            if let val = isCharacter(line) {
+                result += [.character(val)]
+                continue
+            }
+            
+            if let val = isDialogue(line) {
+                result += [.dialogue(val)]
+                continue
+            }
+            
+//            if (previous != nil && following != nil) {
+////                print("previous: \(previous) following: \(following)")
+//                if let text = isCharacter(text: text, previous: previous!, following: following!) {
+//                    result += [.character(text)]
+//                    continue
+//                }
+//            }
             
             // parenthetical - if it follows character or dialogue and is wrapped in parentheses
 //            if (text.hasPrefix("(") && text.hasSuffix(")")){
@@ -38,11 +62,47 @@ class FountainBlockParser {
 //            }
             
             // KEEP AT END action - anything else should be an action
-            result += [
-                .action(text)
-            ]
+            result += [.action(line)]
         }
         return result
+    }
+    
+    func isCharacter(_ line: String) -> String? {
+        if (line.isAllUppercased) {
+            if (isBlockMultiline()) {
+                if (lexer!.Index == 1) {
+                    return line
+                }
+            }
+        }
+        return nil
+    }
+    
+    func isDialogue(_ line: String) -> String? {
+        if (isBlockMultiline()) {
+            if (lexer!.Index >= 2) {
+                if (isParanthetical(line) == nil) {
+                    return line
+                }
+            }
+        }
+        return nil
+    }
+    
+    func isParanthetical(_ line: String) -> String? {
+        if (line.hasPrefix("(") && line.hasSuffix(")")) {
+            if (lexer!.Index != 1) {
+                return line
+            }
+        }
+        return nil
+    }
+    
+    func isBlockMultiline() -> Bool {
+        if (lexer!.count > 1) {
+            return true
+        }
+        return false
     }
 }
 

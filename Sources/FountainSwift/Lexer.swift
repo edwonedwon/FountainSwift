@@ -15,6 +15,11 @@ class Lexer: IteratorProtocol {
     
     /// current iterator position
     private var index = 0
+    public var Index: Int {
+        get {
+            return index
+        }
+    }
     
     /// creates a new lexer by tokenizing the given expression string.
     ///

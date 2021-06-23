@@ -25,54 +25,47 @@
         
         func testParsing_character_and_dialogue() {
             let text = """
-            INT. HOUSE - DAY
-            
             BRICK
             Sup?
             
-            dipe action
+            JIMMY
+            Hey
             """
             let parser = FountainParser(text)
             let nodes = parser.parse()
             XCTAssertEqual(nodes, [
-                .sceneHeading("INT. HOUSE - DAY"),
                 .character("BRICK"),
                 .dialogue("Sup?"),
-                .action("dipe action"),
+                .character("JIMMY"),
+                .dialogue("Hey"),
             ])
         }
         
-//        func testParsing_character_and_dialogue_and_parentheticals() {
-//            let text = """
-//            !INT. HOUSE - DAY
-//
-//            BRICK
-//            Sup?
-//
-//            STEEL
-//            They're coming out of the woodwork!
-//            (pause)
-//            No, everybody we've put away!
-//            (pause)
-//            Point Blank Sniper?
-//
-//            dipe action
-//            """
-//            let parser = FountainParser(text)
-//            let nodes = parser.parse()
-//            XCTAssertEqual(nodes, [
-//                .sceneHeading("INT. HOUSE - DAY"),
-//                .character("BRICK"),
-//                .dialogue("Sup?"),
-//                .character("STEEL"),
-//                .dialogue("They're coming out of the woodwork!"),
-//                .parenthetical("pause"),
-//                .dialogue("No, everybody we've put away!"),
-//                .parenthetical("pause"),
-//                .dialogue("Point Blank Sniper?"),
-//                .action("dipe action"),
-//            ])
-//        }
+        func testParsing_character_and_dialogue_and_parentheticals() {
+            let text = """
+            BRICK
+            Sup?
+
+            STEEL
+            They're coming out of the woodwork!
+            (pause)
+            No, everybody we've put away!
+            (pause)
+            Point Blank Sniper?
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .character("BRICK"),
+                .dialogue("Sup?"),
+                .character("STEEL"),
+                .dialogue("They're coming out of the woodwork!"),
+                .parenthetical("pause"),
+                .dialogue("No, everybody we've put away!"),
+                .parenthetical("pause"),
+                .dialogue("Point Blank Sniper?"),
+            ])
+        }
         
 //        func testParsing_simple() {
 //            let text = """
