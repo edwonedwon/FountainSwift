@@ -2,13 +2,14 @@
     @testable import FountainSwift
 
     final class FountainSwiftTests: XCTestCase {
-        func testParsing_sceneHeading() {
+        
+        func testParsing_sceneHeading_and_action() {
             let text = """
             INT. HOUSE - DAY
             
             poo action
             
-            !INT. HOUSE - DAY
+            !INT. THIS IS ACTUALLY AN ACTION
             
             dipe action
             """
@@ -17,10 +18,61 @@
             XCTAssertEqual(nodes, [
                 .sceneHeading("INT. HOUSE - DAY"),
                 .action("poo action"),
-                .sceneHeading("INT. HOUSE - DAY"),
-                .action("dipe action")
+                .action("INT. THIS IS ACTUALLY AN ACTION"),
+                .action("dipe action"),
             ])
         }
+        
+        func testParsing_character_and_dialogue() {
+            let text = """
+            INT. HOUSE - DAY
+            
+            BRICK
+            Sup?
+            
+            dipe action
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .sceneHeading("INT. HOUSE - DAY"),
+                .character("BRICK"),
+                .dialogue("Sup?"),
+                .action("dipe action"),
+            ])
+        }
+        
+//        func testParsing_character_and_dialogue_and_parentheticals() {
+//            let text = """
+//            !INT. HOUSE - DAY
+//
+//            BRICK
+//            Sup?
+//
+//            STEEL
+//            They're coming out of the woodwork!
+//            (pause)
+//            No, everybody we've put away!
+//            (pause)
+//            Point Blank Sniper?
+//
+//            dipe action
+//            """
+//            let parser = FountainParser(text)
+//            let nodes = parser.parse()
+//            XCTAssertEqual(nodes, [
+//                .sceneHeading("INT. HOUSE - DAY"),
+//                .character("BRICK"),
+//                .dialogue("Sup?"),
+//                .character("STEEL"),
+//                .dialogue("They're coming out of the woodwork!"),
+//                .parenthetical("pause"),
+//                .dialogue("No, everybody we've put away!"),
+//                .parenthetical("pause"),
+//                .dialogue("Point Blank Sniper?"),
+//                .action("dipe action"),
+//            ])
+//        }
         
 //        func testParsing_simple() {
 //            let text = """

@@ -19,49 +19,50 @@ class FountainBlockParser {
             return []
         }
         var result: [FountainNode] = []
-        while var text = lexer.next() {
+        while let text = lexer.next() {
             // action - forced with ! check
-            if (text.hasPrefix("!")){
-                text.removeFirst(1)
-                result += [
-                    .sceneHeading(text)
-                ]
+            if let val = text.isAction {
+                result += [.action(val)]
                 continue
             }
             
             // scene heading - if it has one of the prefixes
-            if sceneHeadingPrefixes.contains(where: text.hasPrefix) {
-                result += [
-                    .sceneHeading(text)
-                ]
+            if let val = text.isSceneHeading {
+                result += [.sceneHeading(val)]
                 continue
             }
             
-            // action - anything else should be an action
+            // parenthetical - if it follows character or dialogue and is wrapped in parentheses
+//            if (text.hasPrefix("(") && text.hasSuffix(")")){
+//
+//            }
+            
+            // KEEP AT END action - anything else should be an action
             result += [
                 .action(text)
             ]
         }
         return result
     }
-    
-    let sceneHeadingPrefixes = [
-        "INT ",
-        "EXT ",
-        "EST ",
-        "INT./EXT ",
-        "INT/EXT ",
-        "I/E ",
-        "INT.",
-        "EXT.",
-        "EST.",
-        "INT./EXT.",
-        "INT/EXT.",
-        "I/E.",
-    ]
 }
 
 extension String {
+    var isAction: String? {
+        if (self.hasPrefix("!")){
+            var text = self
+            text.removeFirst(1)
+            return text
+        }
+        return nil
+    }
+    
+    var isSceneHeading: String? {
+        if sceneHeadingPrefixes.contains(where: self.hasPrefix) {
+            return self
+        }
+        return nil
+    }
+    
     var isAllUppercased: Bool {
         let capitalLetterRegEx  = "[A-Z]+"
         let test = NSPredicate(format:"SELF MATCHES %@", capitalLetterRegEx)
@@ -69,3 +70,18 @@ extension String {
         return capitalresult
     }
 }
+
+let sceneHeadingPrefixes = [
+    "INT ",
+    "EXT ",
+    "EST ",
+    "INT./EXT ",
+    "INT/EXT ",
+    "I/E ",
+    "INT.",
+    "EXT.",
+    "EST.",
+    "INT./EXT.",
+    "INT/EXT.",
+    "I/E.",
+]
