@@ -230,6 +230,22 @@
             ])
         }
         
+        func testParsing_pageBreak() {
+            let text = """
+            
+            ===
+            
+            ===============
+            
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .pageBreak,
+                .pageBreak,
+            ])
+        }
+        
         func testParsing_fullScript_medium() {
             let text = """
             
@@ -238,6 +254,8 @@
             INT. GARAGE - DAY
 
             BRICK and STEEL get into Mom's PORSCHE, Steel at the wheel.  They pause for a beat, the gravity of the situation catching up with them.
+            
+                        ===============================================
 
                                 BRICK
                         This is everybody we've ever put away.
@@ -255,6 +273,7 @@
                 .transition("CUT TO:"),
                 .sceneHeading("INT. GARAGE - DAY"),
                 .action("BRICK and STEEL get into Mom's PORSCHE, Steel at the wheel.  They pause for a beat, the gravity of the situation catching up with them."),
+                .pageBreak,
                 .character("BRICK"),
                 .dialogue("This is everybody we've ever put away."),
                 .character("STEEL"),

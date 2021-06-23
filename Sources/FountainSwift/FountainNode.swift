@@ -18,6 +18,7 @@ enum FountainNode: Equatable {
     case lyric(String)
     case transition(String)
     case centeredText(String)
+    case pageBreak
 }
 
 enum TitlePageNode: Equatable {

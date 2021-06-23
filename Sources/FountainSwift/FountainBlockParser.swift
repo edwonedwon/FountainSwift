@@ -36,6 +36,12 @@ class FountainBlockParser {
                 continue
             }
             
+            // page break
+            if (isPageBreak(line)) {
+                result += [.pageBreak]
+                continue
+            }
+            
             // action - forced with ! check
             if let val = isAction(line) {
                 result += [.action(val)]
@@ -274,6 +280,17 @@ class FountainBlockParser {
             return str
         }
         return nil
+    }
+    
+    func isPageBreak(_ line: String) -> Bool {
+        let line = line.withoutSpaces
+        var isAllEquals = true
+        for c in line {
+            if (c != "=") {
+                isAllEquals = false
+            }
+        }
+        return isAllEquals
     }
     
     func isBlockMultiline() -> Bool {
