@@ -32,6 +32,8 @@ class FountainBlockParser {
             if let node = isTitlePageNode(line) {
                 titlePage += [node]
                 continue
+            } else if (hasTitlePagePrefix(line)) {
+                continue
             }
             
             // action - forced with ! check
@@ -102,8 +104,8 @@ class FountainBlockParser {
             }
         // else if a line following a title page key
         } else {
-            var previousLineIndex = lexer!.Index - 1
-            if (previousLineIndex > 0) {
+            var previousLineIndex = lexer!.Index - 2
+            while (previousLineIndex >= 0) {
                 if let previousLine = lexer!.atIndex(previousLineIndex) {
                     if (hasTitlePagePrefix(previousLine)) {
                         var key = stringBeforeCharacter(previousLine, ":")
@@ -121,6 +123,7 @@ class FountainBlockParser {
     func getTitlePageNode(_ line: String) -> TitlePageNode? {
         var key = stringBeforeCharacter(line, ":")
         var value = stringAfterCharacter(line, ":")
+        if (value.isEmpty) { return nil }
         key = key.withoutSpaces
         value = value.withoutSpaces
         return getTitlePageNode(key, value)
@@ -137,7 +140,7 @@ class FountainBlockParser {
             return .author(value)
         case "source":
             return .source(value)
-        case "draft":
+        case "draft date":
             return .draftDate(value)
         case "contact":
             return .contact(value)

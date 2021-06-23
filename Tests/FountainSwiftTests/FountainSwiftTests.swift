@@ -2,7 +2,8 @@
     @testable import FountainSwift
 
     final class FountainSwiftTests: XCTestCase {
-        func testParsing_titlePage_simple() {
+        
+        func testParsing_titlePage_easy() {
             let text = """
             Title: Star Wars
             Credit: Written by
@@ -19,7 +20,25 @@
             ])
         }
         
-        func testParsing_titlePage_complex() {
+        func testParsing_titlePage_medium() {
+            let text = """
+            Title:
+                _**BRICK & STEEL**_
+                _**FULL RETIRED**_
+            Credit: Written by
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .titlePage([
+                    .title("_**BRICK & STEEL**_"),
+                    .title("_**FULL RETIRED**_"),
+                    .credit("Written by"),
+                ])
+            ])
+        }
+        
+        func testParsing_titlePage_hard() {
             let text = """
             Title:
                 _**BRICK & STEEL**_
