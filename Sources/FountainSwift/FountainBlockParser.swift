@@ -115,10 +115,8 @@ class FountainBlockParser {
             return str
         }
         
-        let delimiter = "("
-        let token = line.components(separatedBy: delimiter)
-        if (token.count > 0) {
-            let characterName = token[0]
+        let characterName = stringBeforeCharacter(line, "(")
+        if (characterName.count > 0) {
             if (characterName.isAllUppercased) {
                 return line.withoutSpaces
             }
@@ -206,6 +204,11 @@ class FountainBlockParser {
             return true
         }
         return false
+    }
+    
+    func stringBeforeCharacter(_ str: String,_ separator: String) -> String {
+        let stringBeforeChar = str.components(separatedBy: separator)
+        return stringBeforeChar[0]
     }
 }
 
