@@ -95,30 +95,62 @@ class FountainBlockParser {
     }
     
     func isTitlePageNode(_ line: String) -> TitlePageNode? {
-        if titlePagePrefixes.contains(where: line.hasPrefix) {
-            var key = stringBeforeCharacter(line, ":")
-            var value = stringAfterCharacter(line, ":")
-            key = key.withoutSpaces
-            value = value.withoutSpaces
-            key = key.lowercased()
-            switch key {
-            case "title":
-                return .title(value)
-            case "credit":
-                return .credit(value)
-            case "author":
-                return .author(value)
-            case "source":
-                return .source(value)
-            case "draft":
-                return .draft(value)
-            case "contact":
-                return .contact(value)
-            default:
-                return nil
+        // if has a title key
+        if hasTitlePagePrefix(line) {
+            if let node = getTitlePageNode(line) {
+                return node
+            }
+        // else if a line following a title page key
+        } else {
+            var previousLineIndex = lexer!.Index - 1
+            if (previousLineIndex > 0) {
+                if let previousLine = lexer!.atIndex(previousLineIndex) {
+                    if (hasTitlePagePrefix(previousLine)) {
+                        var key = stringBeforeCharacter(previousLine, ":")
+                        key = key.withoutSpaces
+                        let value = line.withoutSpaces
+                        return getTitlePageNode(key, value)
+                    }
+                }
+                previousLineIndex -= 1
             }
         }
         return nil
+    }
+    
+    func getTitlePageNode(_ line: String) -> TitlePageNode? {
+        var key = stringBeforeCharacter(line, ":")
+        var value = stringAfterCharacter(line, ":")
+        key = key.withoutSpaces
+        value = value.withoutSpaces
+        return getTitlePageNode(key, value)
+    }
+    
+    func getTitlePageNode(_ key: String, _ value: String) -> TitlePageNode? {
+        let key = key.lowercased()
+        switch key {
+        case "title":
+            return .title(value)
+        case "credit":
+            return .credit(value)
+        case "author":
+            return .author(value)
+        case "source":
+            return .source(value)
+        case "draft":
+            return .draftDate(value)
+        case "contact":
+            return .contact(value)
+        default:
+            return nil
+        }
+    }
+    
+    func hasTitlePagePrefix(_ line: String) -> Bool {
+        if titlePagePrefixes.contains(where: line.hasPrefix) {
+            return true
+        }
+        return false
     }
     
     func isSceneHeading(_ line: String) -> String? {
@@ -266,8 +298,8 @@ extension String {
         return capitalresult
     }
     
-    /// removes spaces form beginning and end of string
-    /// but leaves spaces between characters
+    // removes spaces form beginning and end of string
+    // but leaves spaces between characters
     var withoutSpaces: String {
         return self.trimmingCharacters(in: .whitespaces)
     }

@@ -25,6 +25,6 @@ enum TitlePageNode: Equatable {
     case credit(String)
     case author(String)
     case source(String)
-    case draft(String)
     case contact(String)
+    case draftDate(String)
 }

@@ -36,7 +36,17 @@
             let parser = FountainParser(text)
             let nodes = parser.parse()
             XCTAssertEqual(nodes, [
-                
+                .titlePage([
+                    .title("_**BRICK & STEEL**_"),
+                    .title("_**FULL RETIRED**_"),
+                    .credit("Written by"),
+                    .author("Stu Maschwitz"),
+                    .source("Story by KTM"),
+                    .draftDate("1/20/2012"),
+                    .contact("Next Level Productions"),
+                    .contact("1588 Mission Dr."),
+                    .contact("Solvang, CA 93463"),
+                ])
             ])
         }
         

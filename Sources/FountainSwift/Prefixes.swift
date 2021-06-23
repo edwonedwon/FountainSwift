@@ -12,7 +12,7 @@ let titlePagePrefixes = [
     "Credit:",
     "Author:",
     "Source:",
-    "Draft:",
+    "Draft date:",
     "Contact:",
 ]
 
