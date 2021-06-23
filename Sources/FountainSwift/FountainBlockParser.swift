@@ -48,6 +48,12 @@ class FountainBlockParser {
                 continue
             }
             
+            // snyopses
+            if let node = isSynopses(line) {
+                result += [.synopses(node)]
+                continue
+            }
+            
             // action - forced with ! check
             if let val = isAction(line) {
                 result += [.action(val)]
@@ -315,6 +321,16 @@ class FountainBlockParser {
             let lineWithoutSectionMarkers = String(lineWithoutSpaces[index...]) // Hello
             let finalLine = lineWithoutSectionMarkers.withoutSpaces
             return SectionNode(finalLine, totalEquals-1)
+        }
+        return nil
+    }
+    
+    func isSynopses(_ line: String) -> String? {
+        var line = line.withoutSpaces
+        if (line.hasPrefix("=")) {
+            line.removeFirst()
+            let lineWithoutSpaces = line.withoutSpaces
+            return lineWithoutSpaces
         }
         return nil
     }

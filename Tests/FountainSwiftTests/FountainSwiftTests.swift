@@ -230,10 +230,12 @@ final class FountainSwiftTests: XCTestCase {
         ])
     }
     
-    func testParsing_section() {
+    func testParsing_section_synopses() {
         let text = """
         
         # This is a section at level 0
+        
+        = this is a snyopses
         
         ## nested section level 1
         
@@ -244,6 +246,7 @@ final class FountainSwiftTests: XCTestCase {
         let nodes = parser.parse()
         XCTAssertEqual(nodes, [
             .section(SectionNode("This is a section at level 0", 0)),
+            .synopses("this is a snyopses"),
             .section(SectionNode("nested section level 1", 1)),
             .section(SectionNode("nested section level 2", 2)),
         ])

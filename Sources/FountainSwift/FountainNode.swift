@@ -20,6 +20,7 @@ enum FountainNode: Equatable {
     case centeredText(String)
     case pageBreak
     case section(SectionNode)
+    case synopses(String)
 }
 
 struct SectionNode: Equatable {
