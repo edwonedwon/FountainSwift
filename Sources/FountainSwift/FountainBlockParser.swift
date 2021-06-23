@@ -48,18 +48,10 @@ class FountainBlockParser {
                 continue
             }
             
-//            if (previous != nil && following != nil) {
-////                print("previous: \(previous) following: \(following)")
-//                if let text = isCharacter(text: text, previous: previous!, following: following!) {
-//                    result += [.character(text)]
-//                    continue
-//                }
-//            }
-            
-            // parenthetical - if it follows character or dialogue and is wrapped in parentheses
-//            if (text.hasPrefix("(") && text.hasSuffix(")")){
-//
-//            }
+            if let val = isParanthetical(line) {
+                result += [.parenthetical(val)]
+                continue
+            }
             
             // KEEP AT END action - anything else should be an action
             result += [.action(line)]
@@ -92,7 +84,10 @@ class FountainBlockParser {
     func isParanthetical(_ line: String) -> String? {
         if (line.hasPrefix("(") && line.hasSuffix(")")) {
             if (lexer!.Index != 1) {
-                return line
+                var text = line
+                text.removeFirst()
+                text.removeLast()
+                return text
             }
         }
         return nil
