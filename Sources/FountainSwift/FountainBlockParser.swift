@@ -28,12 +28,12 @@ class FountainBlockParser {
 //            print("line: \(line)")
             
             // action - forced with ! check
-            if let val = line.isAction {
+            if let val = isAction(line) {
                 result += [.action(val)]
                 continue
             }
             
-            if let val = line.isSceneHeading {
+            if let val = isSceneHeading(line) {
                 result += [.sceneHeading(val)]
                 continue
             }
@@ -57,6 +57,22 @@ class FountainBlockParser {
             result += [.action(line)]
         }
         return result
+    }
+    
+    func isAction(_ line: String) -> String? {
+        if (line.hasPrefix("!")){
+            var text = line
+            text.removeFirst(1)
+            return text
+        }
+        return nil
+    }
+    
+    func isSceneHeading(_ line: String) -> String? {
+        if sceneHeadingPrefixes.contains(where: line.hasPrefix) {
+            return line
+        }
+        return nil
     }
     
     func isCharacter(_ line: String) -> String? {
@@ -116,22 +132,6 @@ class FountainBlockParser {
 }
 
 extension String {
-    var isAction: String? {
-        if (self.hasPrefix("!")){
-            var text = self
-            text.removeFirst(1)
-            return text
-        }
-        return nil
-    }
-    
-    var isSceneHeading: String? {
-        if sceneHeadingPrefixes.contains(where: self.hasPrefix) {
-            return self
-        }
-        return nil
-    }
-    
     var isAllUppercased: Bool {
         let capitalLetterRegEx  = "[A-Z]+"
         let test = NSPredicate(format:"SELF MATCHES %@", capitalLetterRegEx)
