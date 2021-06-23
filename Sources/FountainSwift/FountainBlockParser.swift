@@ -19,40 +19,46 @@ class FountainBlockParser {
             return []
         }
         var result: [FountainNode] = []
-        while let text = lexer.next() {
-            print(lexer.count)
-            switch lexer.count {
-            case 1: // other types only have 1 line
-                switch text.isAllUppercased {
-                case true: // is all uppercased
-                    result += [
-                        .sceneHeading(text)
-                    ]
-                default: // is not all uppercased
-                    result += [
-                        .action(text)
-                    ]
-                }
-
-            case 2: // dialogue always has 2 lines (character name + dialogue seperated by \n)
-                let characterText = lexer.atIndex(0)
-                let dialogueText = lexer.atIndex(1)
-                var dialogue: Dialogue
-                if (characterText != nil && dialogueText != nil) {
-                    dialogue = Dialogue(character: characterText!, dialogue: dialogueText!)
-                    result += [
-                        .dialogue(dialogue)
-                    ]
-                    lexer.next() // just skip index because we used 2 lines already
-                }
-            default:
-                print("nothing for: \(text)")
+        while var text = lexer.next() {
+            // action - forced with ! check
+            if (text.hasPrefix("!")){
+                text.removeFirst(1)
+                result += [
+                    .sceneHeading(text)
+                ]
+                continue
             }
+            
+            // scene heading - if it has one of the prefixes
+            if sceneHeadingPrefixes.contains(where: text.hasPrefix) {
+                result += [
+                    .sceneHeading(text)
+                ]
+                continue
+            }
+            
+            // action - anything else should be an action
+            result += [
+                .action(text)
+            ]
         }
         return result
     }
     
-
+    let sceneHeadingPrefixes = [
+        "INT ",
+        "EXT ",
+        "EST ",
+        "INT./EXT ",
+        "INT/EXT ",
+        "I/E ",
+        "INT.",
+        "EXT.",
+        "EST.",
+        "INT./EXT.",
+        "INT/EXT.",
+        "I/E.",
+    ]
 }
 
 extension String {

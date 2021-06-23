@@ -7,16 +7,10 @@
 
 import Foundation
 
-enum FountainNode: Equatable {
-//    // temp
-//    case text(String)
-    
+enum FountainNode: Equatable { 
     case sceneHeading(String)
     case action(String)
-    case dialogue(Dialogue)
-}
-
-struct Dialogue: Equatable {
-    var character: String
-    var dialogue: String
+    case character(String)
+    case dialogue(String)
+    case parenthetical(String)
 }
