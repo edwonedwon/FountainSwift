@@ -10,6 +10,7 @@ import Foundation
 class FountainBlockParser {
     let block: String
     let lexer: Lexer?
+    var titlePage: [TitlePageNode] = []
 
     init(_ block: String) {
         self.block = block
@@ -26,6 +27,12 @@ class FountainBlockParser {
 //            print("lexer count: \(lexer.count)")
 //            print("block: \(block)")
 //            print("line: \(line)")
+            
+            // title page node
+            if let node = isTitlePageNode(line) {
+                titlePage += [node]
+                continue
+            }
             
             // action - forced with ! check
             if let val = isAction(line) {
@@ -78,7 +85,40 @@ class FountainBlockParser {
             // action - by default make it an action - KEEP AT END
             result += [.action(line)]
         }
+        
+        // finally insert the title page at the beginning if there is one
+        if (titlePage != []) {
+            result.insert(.titlePage(titlePage), at: 0)
+        }
+        
         return result
+    }
+    
+    func isTitlePageNode(_ line: String) -> TitlePageNode? {
+        if titlePagePrefixes.contains(where: line.hasPrefix) {
+            var key = stringBeforeCharacter(line, ":")
+            var value = stringAfterCharacter(line, ":")
+            key = key.withoutSpaces
+            value = value.withoutSpaces
+            key = key.lowercased()
+            switch key {
+            case "title":
+                return .title(value)
+            case "credit":
+                return .credit(value)
+            case "author":
+                return .author(value)
+            case "source":
+                return .source(value)
+            case "draft":
+                return .draft(value)
+            case "contact":
+                return .contact(value)
+            default:
+                return nil
+            }
+        }
+        return nil
     }
     
     func isSceneHeading(_ line: String) -> String? {
@@ -210,6 +250,11 @@ class FountainBlockParser {
         let stringBeforeChar = str.components(separatedBy: separator)
         return stringBeforeChar[0]
     }
+    
+    func stringAfterCharacter(_ str: String,_ separator: String) -> String {
+        let stringAfterChar = str.components(separatedBy: separator)
+        return stringAfterChar[1]
+    }
 }
 
 extension String {
@@ -227,18 +272,3 @@ extension String {
         return self.trimmingCharacters(in: .whitespaces)
     }
 }
-
-let sceneHeadingPrefixes = [
-    "INT ",
-    "EXT ",
-    "EST ",
-    "INT./EXT ",
-    "INT/EXT ",
-    "I/E ",
-    "INT.",
-    "EXT.",
-    "EST.",
-    "INT./EXT.",
-    "INT/EXT.",
-    "I/E.",
-]

@@ -2,6 +2,44 @@
     @testable import FountainSwift
 
     final class FountainSwiftTests: XCTestCase {
+        func testParsing_titlePage_simple() {
+            let text = """
+            Title: Star Wars
+            Credit: Written by
+            Author: George Lucas
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .titlePage([
+                    .title("Star Wars"),
+                    .credit("Written by"),
+                    .author("George Lucas"),
+                ])
+            ])
+        }
+        
+        func testParsing_titlePage_complex() {
+            let text = """
+            Title:
+                _**BRICK & STEEL**_
+                _**FULL RETIRED**_
+            Credit: Written by
+            Author: Stu Maschwitz
+            Source: Story by KTM
+            Draft date: 1/20/2012
+            Contact:
+                Next Level Productions
+                1588 Mission Dr.
+                Solvang, CA 93463
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                
+            ])
+        }
+        
         func testParsing_sceneHeading_action() {
             let text = """
             INT. HOUSE - DAY
