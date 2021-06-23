@@ -37,6 +37,7 @@ class FountainBlockParser {
                 result += [.lyric(val)]
                 continue
             }
+            
             if let val = isSceneHeading(line) {
                 result += [.sceneHeading(val)]
                 continue
@@ -70,9 +71,9 @@ class FountainBlockParser {
     
     func isAction(_ line: String) -> String? {
         if (line.hasPrefix("!")){
-            var text = line
-            text.removeFirst(1)
-            return text
+            var str = line
+            str.removeFirst(1)
+            return str
         }
         return nil
     }
@@ -89,9 +90,9 @@ class FountainBlockParser {
         if (lexer!.Index != 1) { return nil }
         
         if (line.first == "@") {
-            var line = line
-            line.removeFirst()
-            return line
+            var str = line
+            str.removeFirst()
+            return str
         }
         
         let delimiter = "("
@@ -134,10 +135,10 @@ class FountainBlockParser {
     func isParanthetical(_ line: String) -> String? {
         if (line.hasPrefix("(") && line.hasSuffix(")")) {
             if (lexer!.Index != 1) {
-                var text = line
-                text.removeFirst()
-                text.removeLast()
-                return text
+                var str = line
+                str.removeFirst()
+                str.removeLast()
+                return str
             }
         }
         return nil
@@ -164,8 +165,8 @@ extension String {
     var isAllUppercased: Bool {
         let capitalLetterRegEx  = "[A-Z]+"
         let test = NSPredicate(format:"SELF MATCHES %@", capitalLetterRegEx)
-        let text = self.withoutSpaces
-        let capitalresult = test.evaluate(with: text)
+        let str = self.withoutSpaces
+        let capitalresult = test.evaluate(with: str)
         return capitalresult
     }
     
