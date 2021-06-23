@@ -22,54 +22,36 @@
             ])
         }
         
-        func testParsing_character() {
+        func testParsing_character_dialogue() {
             let text = """
             BRICK (O. S.)
-            dialogue
+            I'm saying a thing!
             
                 BRICK
-            dialogue
+            Poopy DOOOOPYYYY.
             
               BRICK
-            dialogue
+            This is so fun!
             
             HANS (on the radio)
-            dialogue
+            What the fuck?!!
             
             @McCLANE
-            dialogue
+            Freeedoooommmm!!!!
             """
             let parser = FountainParser(text)
             let nodes = parser.parse()
             XCTAssertEqual(nodes, [
                 .character("BRICK (O. S.)"),
-                .dialogue("dialogue"),
+                .dialogue("I'm saying a thing!"),
                 .character("BRICK"),
-                .dialogue("dialogue"),
+                .dialogue("Poopy DOOOOPYYYY."),
                 .character("BRICK"),
-                .dialogue("dialogue"),
+                .dialogue("This is so fun!"),
                 .character("HANS (on the radio)"),
-                .dialogue("dialogue"),
+                .dialogue("What the fuck?!!"),
                 .character("McCLANE"),
-                .dialogue("dialogue"),
-            ])
-        }
-        
-        func testParsing_character_dialogue() {
-            let text = """
-            BRICK
-            Sup?
-            
-            JIMMY
-            Hey
-            """
-            let parser = FountainParser(text)
-            let nodes = parser.parse()
-            XCTAssertEqual(nodes, [
-                .character("BRICK"),
-                .dialogue("Sup?"),
-                .character("JIMMY"),
-                .dialogue("Hey"),
+                .dialogue("Freeedoooommmm!!!!"),
             ])
         }
         
