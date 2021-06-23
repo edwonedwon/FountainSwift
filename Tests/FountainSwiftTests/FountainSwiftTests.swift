@@ -259,6 +259,9 @@
 
                                 BRICK
                         This is everybody we've ever put away.
+                    Whoa, this is dialogue too
+                        (and here's a parenthetical)
+                                and more dialogue
 
                             STEEL
                            (starting the engine)
@@ -276,6 +279,9 @@
                 .pageBreak,
                 .character("BRICK"),
                 .dialogue("This is everybody we've ever put away."),
+                .dialogue("Whoa, this is dialogue too"),
+                .parenthetical("and here's a parenthetical"),
+                .dialogue("and more dialogue"),
                 .character("STEEL"),
                 .parenthetical("starting the engine"),
                 .dialogue("So much for retirement!"),
