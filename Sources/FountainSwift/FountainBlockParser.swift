@@ -168,6 +168,7 @@ class FountainBlockParser {
     }
     
     func hasTitlePagePrefix(_ line: String) -> Bool {
+        let line = line.withoutSpaces
         if titlePagePrefixes.contains(where: line.hasPrefix) {
             return true
         }

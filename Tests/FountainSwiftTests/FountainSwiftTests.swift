@@ -40,17 +40,17 @@ final class FountainSwiftTests: XCTestCase {
     
     func testParsing_titlePage_hard() {
         let text = """
-        Title:
-            _**BRICK & STEEL**_
-            _**FULL RETIRED**_
-        Credit: Written by
-        Author: Stu Maschwitz
-        Source: Story by KTM
-        Draft date: 1/20/2012
-        Contact:
-            Next Level Productions
-            1588 Mission Dr.
-            Solvang, CA 93463
+            Title:
+                _**BRICK & STEEL**_
+                _**FULL RETIRED**_
+            Credit: Written by
+            Author: Stu Maschwitz
+            Source: Story by KTM
+            Draft date: 1/20/2012
+            Contact:
+                Next Level Productions
+                1588 Mission Dr.
+                Solvang, CA 93463
         """
         let parser = FountainParser(text)
         let nodes = parser.parse()
@@ -270,8 +270,19 @@ final class FountainSwiftTests: XCTestCase {
     
     func testParsing_fullScript_medium() {
         let text = """
+            Title:
+                _**BRICK & STEEL**_
+                _**FULL RETIRED**_
+            Credit: Written by
+            Author: Stu Maschwitz
+            Source: Story by KTM
+            Draft date: 1/20/2012
+            Contact:
+                Next Level Productions
+                1588 Mission Dr.
+                Solvang, CA 93463
         
-                    CUT TO:
+        CUT TO:
 
         INT. GARAGE - DAY
 
@@ -295,6 +306,17 @@ final class FountainSwiftTests: XCTestCase {
         let parser = FountainParser(text)
         let nodes = parser.parse()
         XCTAssertEqual(nodes, [
+            .titlePage([
+                .title("_**BRICK & STEEL**_"),
+                .title("_**FULL RETIRED**_"),
+                .credit("Written by"),
+                .author("Stu Maschwitz"),
+                .source("Story by KTM"),
+                .draftDate("1/20/2012"),
+                .contact("Next Level Productions"),
+                .contact("1588 Mission Dr."),
+                .contact("Solvang, CA 93463"),
+            ]),
             .transition("CUT TO:"),
             .sceneHeading("INT. GARAGE - DAY"),
             .action("BRICK and STEEL get into Mom's PORSCHE, Steel at the wheel.  They pause for a beat, the gravity of the situation catching up with them."),
