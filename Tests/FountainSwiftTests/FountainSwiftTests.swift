@@ -98,4 +98,17 @@
                 .dialogue("They're coming out of the woodwork!"),
             ])
         }
+        
+        func testParsing_lyrics() {
+            let text = """
+            ~Willy Wonka! Willy Wonka! The amazing chocolatier!
+            ~Willy Wonka! Willy Wonka! Everybody give a cheer!
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .lyric("Willy Wonka! Willy Wonka! The amazing chocolatier!"),
+                .lyric("Willy Wonka! Willy Wonka! Everybody give a cheer!"),
+            ])
+        }
     }

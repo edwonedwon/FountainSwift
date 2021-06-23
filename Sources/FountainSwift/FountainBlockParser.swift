@@ -33,6 +33,10 @@ class FountainBlockParser {
                 continue
             }
             
+            if let val = isLyric(line) {
+                result += [.lyric(val)]
+                continue
+            }
             if let val = isSceneHeading(line) {
                 result += [.sceneHeading(val)]
                 continue
@@ -135,6 +139,15 @@ class FountainBlockParser {
                 text.removeLast()
                 return text
             }
+        }
+        return nil
+    }
+    
+    func isLyric(_ line: String) -> String? {
+        if (line.hasPrefix("~")) {
+            var str = line
+            str.removeFirst()
+            return str
         }
         return nil
     }
