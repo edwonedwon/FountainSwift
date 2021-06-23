@@ -75,15 +75,6 @@ class FountainBlockParser {
         return result
     }
     
-    func isAction(_ line: String) -> String? {
-        if (line.hasPrefix("!")){
-            var str = line
-            str.removeFirst(1)
-            return str
-        }
-        return nil
-    }
-    
     func isSceneHeading(_ line: String) -> String? {
         if (isBlockMultiline()) { return nil }
         
@@ -92,9 +83,18 @@ class FountainBlockParser {
             lineWithoutSpaces.removeFirst()
             return lineWithoutSpaces
         }
-
+        
         if sceneHeadingPrefixes.contains(where: line.hasPrefix) {
             return line
+        }
+        return nil
+    }
+    
+    func isAction(_ line: String) -> String? {
+        if (line.hasPrefix("!")){
+            var str = line
+            str.removeFirst(1)
+            return str
         }
         return nil
     }
