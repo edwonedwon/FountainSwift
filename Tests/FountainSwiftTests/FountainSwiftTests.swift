@@ -230,6 +230,25 @@ final class FountainSwiftTests: XCTestCase {
         ])
     }
     
+    func testParsing_section() {
+        let text = """
+        
+        # This is a section at level 0
+        
+        ## nested section level 1
+        
+        ### nested section level 2
+        
+        """
+        let parser = FountainParser(text)
+        let nodes = parser.parse()
+        XCTAssertEqual(nodes, [
+            .section(SectionNode("This is a section at level 0", 0)),
+            .section(SectionNode("nested section level 1", 1)),
+            .section(SectionNode("nested section level 2", 2)),
+        ])
+    }
+    
     func testParsing_pageBreak() {
         let text = """
         

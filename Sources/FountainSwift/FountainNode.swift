@@ -19,6 +19,17 @@ enum FountainNode: Equatable {
     case transition(String)
     case centeredText(String)
     case pageBreak
+    case section(SectionNode)
+}
+
+struct SectionNode: Equatable {
+    let text: String
+    let nestLevel: Int
+    
+    init (_ text: String,_ nestLevel: Int) {
+        self.text = text
+        self.nestLevel = nestLevel
+    }
 }
 
 enum TitlePageNode: Equatable {

@@ -42,6 +42,12 @@ class FountainBlockParser {
                 continue
             }
             
+            // section
+            if let node = isSection(line) {
+                result += [.section(node)]
+                continue
+            }
+            
             // action - forced with ! check
             if let val = isAction(line) {
                 result += [.action(val)]
@@ -291,6 +297,26 @@ class FountainBlockParser {
             }
         }
         return isAllEquals
+    }
+    
+    func isSection(_ line: String) -> SectionNode? {
+        let line = line.withoutSpaces
+        if (line.hasPrefix("#")) {
+            var totalEquals = 0
+            for c in line {
+                if (c == "#") {
+                    totalEquals += 1
+                } else {
+                    break
+                }
+            }
+            let lineWithoutSpaces = line.withoutSpaces
+            let index = lineWithoutSpaces.index(lineWithoutSpaces.startIndex, offsetBy: totalEquals)
+            let lineWithoutSectionMarkers = String(lineWithoutSpaces[index...]) // Hello
+            let finalLine = lineWithoutSectionMarkers.withoutSpaces
+            return SectionNode(finalLine, totalEquals-1)
+        }
+        return nil
     }
     
     func isBlockMultiline() -> Bool {
