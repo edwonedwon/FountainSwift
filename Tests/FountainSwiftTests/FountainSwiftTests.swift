@@ -23,6 +23,39 @@
             ])
         }
         
+        func testParsing_character() {
+            let text = """
+            BRICK (O. S.)
+            dialogue
+            
+                BRICK
+            dialogue
+            
+              BRICK
+            dialogue
+            
+            HANS (on the radio)
+            dialogue
+            
+            @McCLANE
+            dialogue
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .character("BRICK (O. S.)"),
+                .dialogue("dialogue"),
+                .character("BRICK"),
+                .dialogue("dialogue"),
+                .character("BRICK"),
+                .dialogue("dialogue"),
+                .character("HANS (on the radio)"),
+                .dialogue("dialogue"),
+                .character("McCLANE"),
+                .dialogue("dialogue"),
+            ])
+        }
+        
         func testParsing_character_dialogue() {
             let text = """
             BRICK

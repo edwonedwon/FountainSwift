@@ -60,12 +60,26 @@ class FountainBlockParser {
     }
     
     func isCharacter(_ line: String) -> String? {
-        if (line.isAllUppercased) {
-            if (isBlockMultiline()) {
-                if (lexer!.Index == 1) {
-                    return line
-                }
+        if (!isBlockMultiline()) { return nil }
+        if (lexer!.Index != 1) { return nil }
+        
+        if (line.first == "@") {
+            var line = line
+            line.removeFirst()
+            return line
+        }
+        
+        let delimiter = "("
+        let token = line.components(separatedBy: delimiter)
+        if (token.count > 0) {
+            let characterName = token[0]
+            if (characterName.isAllUppercased) {
+                return line.withoutSpaces
             }
+        }
+        
+        if (line.isAllUppercased) {
+            return line
         }
         return nil
     }
@@ -121,8 +135,13 @@ extension String {
     var isAllUppercased: Bool {
         let capitalLetterRegEx  = "[A-Z]+"
         let test = NSPredicate(format:"SELF MATCHES %@", capitalLetterRegEx)
-        let capitalresult = test.evaluate(with: self)
+        let text = self.withoutSpaces
+        let capitalresult = test.evaluate(with: text)
         return capitalresult
+    }
+    
+    var withoutSpaces: String {
+        return self.trimmingCharacters(in: .whitespaces)
     }
 }
 
