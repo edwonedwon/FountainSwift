@@ -39,6 +39,12 @@ class FountainBlockParser {
                 continue
             }
             
+            // centered text - must come before character and dialogue
+            if let val = isCenteredText(line) {
+                result += [.centeredText(val)]
+                continue
+            }
+            
             if let val = isSceneHeading(line) {
                 result += [.sceneHeading(val)]
                 continue
@@ -181,6 +187,17 @@ class FountainBlockParser {
             return lineWithoutSpaces
         }
         
+        return nil
+    }
+    
+    func isCenteredText(_ line: String) -> String? {
+        var str = line.withoutSpaces
+        if (str.hasPrefix(">") && str.hasSuffix("<")) {
+            str.removeFirst()
+            str.removeLast()
+            str = str.withoutSpaces
+            return str
+        }
         return nil
     }
     

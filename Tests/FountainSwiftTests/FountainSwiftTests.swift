@@ -118,7 +118,7 @@
             ])
         }
         
-        func testParsing_sceneTransition() {
+        func testParsing_transition() {
             let text = """
             
             INT. POOPY HOUSE
@@ -145,6 +145,21 @@
                 .sceneHeading("CUT TO:"),
                 .character("BILL"),
                 .dialogue("poo"),
+            ])
+        }
+        
+        func testParsing_centeredText() {
+            let text = """
+            
+            >THE END<
+            >  THE END  <
+            
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .centeredText("THE END"),
+                .centeredText("THE END"),
             ])
         }
     }
