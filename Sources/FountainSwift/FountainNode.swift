@@ -15,4 +15,5 @@ enum FountainNode: Equatable {
     case dialogue(String)
     case parenthetical(String)
     case lyric(String)
+    case transition(String)
 }

@@ -11,6 +11,10 @@
             !INT. THIS IS ACTUALLY AN ACTION
             
             dipe action
+            
+            .forced scene heading
+            
+            some action
             """
             let parser = FountainParser(text)
             let nodes = parser.parse()
@@ -19,6 +23,8 @@
                 .action("poo action"),
                 .action("INT. THIS IS ACTUALLY AN ACTION"),
                 .action("dipe action"),
+                .sceneHeading("forced scene heading"),
+                .action("some action"),
             ])
         }
         

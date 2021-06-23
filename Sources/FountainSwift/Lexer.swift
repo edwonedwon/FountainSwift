@@ -28,7 +28,8 @@ class Lexer: IteratorProtocol {
     ///
     /// - Parameter expression: expression used to tokenize and lex
     convenience init?(raw expression: String, separator: String) {
-        let lexems = expression.components(separatedBy: separator)
+        let expressionTrimmed = expression.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lexems = expressionTrimmed.components(separatedBy: separator)
         guard !lexems.isEmpty else {
             return nil
         }

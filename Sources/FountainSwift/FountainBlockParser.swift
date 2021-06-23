@@ -59,6 +59,11 @@ class FountainBlockParser {
                 continue
             }
             
+            if let val = isTransition(line) {
+                result += [.transition(val)]
+                continue
+            }
+            
             if let val = isParanthetical(line) {
                 result += [.parenthetical(val)]
                 continue
@@ -80,6 +85,14 @@ class FountainBlockParser {
     }
     
     func isSceneHeading(_ line: String) -> String? {
+        if (isBlockMultiline()) { return nil }
+        
+        var lineWithoutSpaces = line.withoutSpaces
+        if (lineWithoutSpaces.hasPrefix(".")) {
+            lineWithoutSpaces.removeFirst()
+            return lineWithoutSpaces
+        }
+
         if sceneHeadingPrefixes.contains(where: line.hasPrefix) {
             return line
         }
@@ -154,6 +167,23 @@ class FountainBlockParser {
         return nil
     }
     
+    func isTransition(_ line: String) -> String? {
+        var lineWithoutSpaces = line.withoutSpaces
+        if (lineWithoutSpaces.first == ">") {
+            lineWithoutSpaces.removeFirst()
+            lineWithoutSpaces = lineWithoutSpaces.withoutSpaces
+            return lineWithoutSpaces
+        }
+        
+        if (isBlockMultiline()) { return nil }
+        
+        if (line.hasSuffix("TO:")) {
+            return lineWithoutSpaces
+        }
+        
+        return nil
+    }
+    
     func isBlockMultiline() -> Bool {
         if (lexer!.count > 1) {
             return true
@@ -171,6 +201,8 @@ extension String {
         return capitalresult
     }
     
+    /// removes spaces form beginning and end of string
+    /// but leaves spaces between characters
     var withoutSpaces: String {
         return self.trimmingCharacters(in: .whitespaces)
     }
