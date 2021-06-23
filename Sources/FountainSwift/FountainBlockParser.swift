@@ -215,6 +215,7 @@ class FountainBlockParser {
     }
     
     func isDialogue(_ line: String) -> String? {
+        let line = line.withoutSpaces
         if (isBlockMultiline()) {
             if (lexer!.Index >= 2) {
                 if (isParanthetical(line) == nil) {
@@ -226,6 +227,7 @@ class FountainBlockParser {
     }
     
     func isParanthetical(_ line: String) -> String? {
+        let line = line.withoutSpaces
         if (line.hasPrefix("(") && line.hasSuffix(")")) {
             if (lexer!.Index != 1) {
                 var str = line

@@ -229,4 +229,38 @@
                 .centeredText("THE END"),
             ])
         }
+        
+        func testParsing_fullScript_medium() {
+            let text = """
+            
+                        CUT TO:
+
+            INT. GARAGE - DAY
+
+            BRICK and STEEL get into Mom's PORSCHE, Steel at the wheel.  They pause for a beat, the gravity of the situation catching up with them.
+
+                                BRICK
+                        This is everybody we've ever put away.
+
+                            STEEL
+                           (starting the engine)
+                        So much for retirement!
+
+            They speed off.  To destiny!
+            
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .transition("CUT TO:"),
+                .sceneHeading("INT. GARAGE - DAY"),
+                .action("BRICK and STEEL get into Mom's PORSCHE, Steel at the wheel.  They pause for a beat, the gravity of the situation catching up with them."),
+                .character("BRICK"),
+                .dialogue("This is everybody we've ever put away."),
+                .character("STEEL"),
+                .parenthetical("starting the engine"),
+                .dialogue("So much for retirement!"),
+                .action("They speed off.  To destiny!"),
+            ])
+        }
     }
