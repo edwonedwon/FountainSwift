@@ -43,6 +43,11 @@ class FountainBlockParser {
                 continue
             }
             
+            if let val = isCharacterDualDialogue(line) {
+                result += [.characterDualDialogue(val)]
+                continue
+            }
+            
             if let val = isDialogue(line) {
                 result += [.dialogue(val)]
                 continue
@@ -96,6 +101,17 @@ class FountainBlockParser {
         
         if (line.isAllUppercased) {
             return line
+        }
+        return nil
+    }
+    
+    func isCharacterDualDialogue(_ line: String) -> String? {
+        var lineWithoutSpaces = line.withoutSpaces
+        if (lineWithoutSpaces.hasSuffix("^")) {
+            lineWithoutSpaces.removeLast()
+            if let characterLine = isCharacter(lineWithoutSpaces) {
+                return characterLine
+            }
         }
         return nil
     }

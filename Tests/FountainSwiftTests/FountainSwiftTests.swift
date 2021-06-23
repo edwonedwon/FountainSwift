@@ -80,4 +80,22 @@
                 .dialogue("Point Blank Sniper?"),
             ])
         }
+        
+        func testParsing_character_dual_dialogue() {
+            let text = """
+            BRICK
+            Sup?
+
+            STEEL^
+            They're coming out of the woodwork!
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .character("BRICK"),
+                .dialogue("Sup?"),
+                .characterDualDialogue("STEEL"),
+                .dialogue("They're coming out of the woodwork!"),
+            ])
+        }
     }
