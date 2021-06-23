@@ -117,4 +117,34 @@
                 .lyric("Willy Wonka! Willy Wonka! Everybody give a cheer!"),
             ])
         }
+        
+        func testParsing_sceneTransition() {
+            let text = """
+            
+            INT. POOPY HOUSE
+            
+            the dog sits
+            
+            CUT TO:
+            
+            > Burn to White.
+            
+            .CUT TO:
+            
+            BILL
+            poo
+            
+            """
+            let parser = FountainParser(text)
+            let nodes = parser.parse()
+            XCTAssertEqual(nodes, [
+                .sceneHeading("INT. POOPY HOUSE"),
+                .action("the dog sits"),
+                .transition("CUT TO:"),
+                .transition("Burn to White."),
+                .sceneHeading("CUT TO:"),
+                .character("BILL"),
+                .dialogue("poo"),
+            ])
+        }
     }
