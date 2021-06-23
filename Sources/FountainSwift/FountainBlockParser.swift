@@ -33,6 +33,7 @@ class FountainBlockParser {
                 continue
             }
             
+            // lyric - must come before character and dialogue
             if let val = isLyric(line) {
                 result += [.lyric(val)]
                 continue
@@ -63,7 +64,7 @@ class FountainBlockParser {
                 continue
             }
             
-            // KEEP AT END action - anything else should be an action
+            // action - by default make it an action - KEEP AT END
             result += [.action(line)]
         }
         return result
