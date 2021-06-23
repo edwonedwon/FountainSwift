@@ -3,7 +3,7 @@
 
     final class FountainSwiftTests: XCTestCase {
         
-        func testParsing_sceneHeading_and_action() {
+        func testParsing_sceneHeading_action() {
             let text = """
             INT. HOUSE - DAY
             
@@ -23,7 +23,7 @@
             ])
         }
         
-        func testParsing_character_and_dialogue() {
+        func testParsing_character_dialogue() {
             let text = """
             BRICK
             Sup?
@@ -41,7 +41,7 @@
             ])
         }
         
-        func testParsing_character_and_dialogue_and_parentheticals() {
+        func testParsing_character_dialogue_parentheticals() {
             let text = """
             BRICK
             Sup?
