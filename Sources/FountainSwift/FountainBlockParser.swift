@@ -136,9 +136,7 @@ class FountainBlockParser {
     
     func boneyardRemover(_ block: String) -> String? {
         if (block.contains("/*") && block.contains("*/")) {
-            if let withoutBoneyard = block.removeSlice(from: "/*", to: "*/", alsoRemoveFromTo: true) {
-                return withoutBoneyard
-            }
+            return removeBoneyards(block)
         } else if (block.contains("/*")) {
 //            print("boneyard started only")
 //            let newBlock = block.remove
@@ -146,6 +144,16 @@ class FountainBlockParser {
 //            print("boneyard ended only")
         }
         return nil
+    }
+    
+    func removeBoneyards(_ block: String) -> String {
+        var block = block
+        while (block.contains("/*") && block.contains("*/")) {
+            if let withoutBoneyard = block.removeSlice(from: "/*", to: "*/", alsoRemoveFromTo: true) {
+                block = withoutBoneyard
+            }
+        }
+        return block
     }
     
     func isTitlePageNode(_ line: String) -> TitlePageNode? {
