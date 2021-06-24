@@ -7,16 +7,16 @@
 
 import Foundation
 
-class FountainParser {
+public class FountainParser {
     private let text: String
     private var isBoneyardSpan = false
     private var firstBoneyardSpanCall = false
     
-    init(_ text: String) {
+    public init(_ text: String) {
         self.text = text
     }
     
-    func parse() -> [FountainNode] {
+    public func parse() -> [FountainNode] {
         // in case text is empty, return empty sequence instead of any nodes
         guard !text.isEmpty, let lexer = Lexer(raw: text, separator: "\n\n") else {
             return []
