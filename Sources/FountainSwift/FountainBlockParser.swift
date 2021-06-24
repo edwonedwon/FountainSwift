@@ -40,7 +40,7 @@ class FountainBlockParser {
 //            print("lexer index: \(lexer.Index)")
 //            print("lexer count: \(lexer.count)")
 //            print("block: \(block)")
-            print("line: \(line)")
+//            print("line: \(line)")
                         
             // title page node
             if let node = isTitlePageNode(line) {
@@ -139,9 +139,14 @@ class FountainBlockParser {
             return removeBoneyards(block)
         } else if (block.contains("/*")) {
 //            print("boneyard started only")
-//            let newBlock = block.remove
+            let newBlock = block.removeAfter("/*", alsoRemoveSeparator: true)
+            onStartBoneyard()
+            return newBlock
         } else if (block.contains("*/")) {
 //            print("boneyard ended only")
+            let newBlock = block.removeBefore("*/", alsoRemoveSeparator: true)
+            onEndBoneyard()
+            return newBlock
         }
         return nil
     }
@@ -436,5 +441,29 @@ extension String {
             newString.removeSubrange(range)
         }
         return newString
+    }
+    
+    func removeBefore(_ separator: String, alsoRemoveSeparator: Bool) -> String {
+        var str = self
+        if let range = str.range(of: separator) {
+            if (alsoRemoveSeparator) {
+                str.removeSubrange(str.startIndex..<range.upperBound)
+            } else {
+                str.removeSubrange(str.startIndex..<range.lowerBound)
+            }
+        }
+        return str
+    }
+
+    func removeAfter(_ separator: String, alsoRemoveSeparator: Bool) -> String {
+        var str = self
+        if let range = str.range(of: separator) {
+            if (alsoRemoveSeparator) {
+                str.removeSubrange(range.lowerBound..<str.endIndex)
+            } else {
+                str.removeSubrange(range.upperBound..<str.endIndex)
+            }
+        }
+        return str
     }
 }

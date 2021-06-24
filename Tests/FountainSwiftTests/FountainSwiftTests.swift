@@ -324,6 +324,25 @@ final class FountainSwiftTests: XCTestCase {
         ])
     }
     
+    func testParsing_boneyard_superhard() {
+        let text = """
+        INT. HOUSE
+        
+        What the fuck /* this is an inline boneyard man.
+        
+        This actions should not be included.
+        
+        BILL
+        some dialogue*/
+        """
+        let parser = FountainParser(text)
+        let nodes = parser.parse()
+        XCTAssertEqual(nodes, [
+            .sceneHeading("INT. HOUSE"),
+            .action("What the fuck"),
+        ])
+    }
+    
     func testParsing_pageBreak() {
         let text = """
         

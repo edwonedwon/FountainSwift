@@ -10,6 +10,7 @@ import Foundation
 class FountainParser {
     private let text: String
     private var isBoneyardSpan = false
+    private var firstBoneyardSpanCall = false
     
     init(_ text: String) {
         self.text = text
@@ -26,11 +27,16 @@ class FountainParser {
             let resultToAdd = FountainBlockParser(text,
             onStartBoneyard: {
                 self.isBoneyardSpan = true
+                self.firstBoneyardSpanCall = true
+//                print("isBoneyardSpan = true")
             }, onEndBoneyard: {
                 self.isBoneyardSpan = false
+//                print("isBoneyardSpan = false")
             }).parse()
-            
-            if (!isBoneyardSpan) {
+                    
+            if (!isBoneyardSpan || firstBoneyardSpanCall == true) {
+                print("resultToAdd: \(resultToAdd)")
+                firstBoneyardSpanCall = false
                 result += resultToAdd
             }
         }
