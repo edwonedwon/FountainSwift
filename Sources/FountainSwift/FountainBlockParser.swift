@@ -27,7 +27,7 @@ class FountainBlockParser {
 //            print("lexer count: \(lexer.count)")
 //            print("block: \(block)")
 //            print("line: \(line)")
-            
+                        
             // title page node
             if let node = isTitlePageNode(line) {
                 titlePage += [node]
@@ -54,7 +54,7 @@ class FountainBlockParser {
                 continue
             }
             
-            // notes
+            // note
             if let node = isNote(line) {
                 result += [.note(NoteNode(node))]
                 continue
@@ -112,7 +112,7 @@ class FountainBlockParser {
             result += [.action(line)]
         }
         
-        // finally insert the title page at the beginning if there is one
+        // insert the title page at the beginning if there is one
         if (titlePage != []) {
             result.insert(.titlePage(titlePage), at: 0)
         }
