@@ -8,9 +8,9 @@
 import Foundation
 
 class FountainBlockParser {
-    let block: String
-    let lexer: Lexer?
-    var titlePage: [TitlePageNode] = []
+    private let block: String
+    private let lexer: Lexer?
+    private var titlePage: [TitlePageNode] = []
 
     init(_ block: String) {
         self.block = block
