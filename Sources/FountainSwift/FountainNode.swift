@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FountainNode: Equatable {
+public enum FountainNode: Equatable {
     case titlePage([TitlePageNode])
     case sceneHeading(String)
     case action(String)
@@ -24,7 +24,7 @@ enum FountainNode: Equatable {
     case note(NoteNode)
 }
 
-struct NoteNode: Equatable {
+public struct NoteNode: Equatable {
     let text: String
     let locationInPreviousNode: Int?
     
@@ -39,7 +39,7 @@ struct NoteNode: Equatable {
     }
 }
 
-struct SectionNode: Equatable {
+public struct SectionNode: Equatable {
     let text: String
     let nestLevel: Int
     
@@ -49,7 +49,7 @@ struct SectionNode: Equatable {
     }
 }
 
-enum TitlePageNode: Equatable {
+public enum TitlePageNode: Equatable {
     case title(String)
     case credit(String)
     case author(String)
