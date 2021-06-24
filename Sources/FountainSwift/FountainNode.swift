@@ -21,6 +21,22 @@ enum FountainNode: Equatable {
     case pageBreak
     case section(SectionNode)
     case synopses(String)
+    case note(NoteNode)
+}
+
+struct NoteNode: Equatable {
+    let text: String
+    let locationInPreviousNode: Int?
+    
+    init(_ text: String) {
+        self.text = text
+        locationInPreviousNode = nil
+    }
+    
+    init(_ text: String,_ locationInPreviousNode: Int?) {
+        self.text = text
+        self.locationInPreviousNode = locationInPreviousNode
+    }
 }
 
 struct SectionNode: Equatable {

@@ -54,6 +54,12 @@ class FountainBlockParser {
                 continue
             }
             
+            // notes
+            if let node = isNote(line) {
+                result += [.note(NoteNode(node))]
+                continue
+            }
+            
             // action - forced with ! check
             if let val = isAction(line) {
                 result += [.action(val)]
@@ -330,8 +336,19 @@ class FountainBlockParser {
         var line = line.withoutSpaces
         if (line.hasPrefix("=")) {
             line.removeFirst()
-            let lineWithoutSpaces = line.withoutSpaces
-            return lineWithoutSpaces
+            return line.withoutSpaces
+        }
+        return nil
+    }
+    
+    func isNote(_ line: String) -> String? {
+        var line = line.withoutSpaces
+        if (line.hasPrefix("[[") && line.hasSuffix("]]")) {
+            line.removeFirst()
+            line.removeFirst()
+            line.removeLast()
+            line.removeLast()
+            return line.withoutSpaces
         }
         return nil
     }
