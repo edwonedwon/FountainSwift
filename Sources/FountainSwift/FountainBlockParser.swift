@@ -9,11 +9,15 @@ import Foundation
 
 class FountainBlockParser {
     private let block: String
-    private let lexer: Lexer?
+    private var lexer: Lexer?
     private var titlePage: [TitlePageNode] = []
+    private var onStartBoneyard: () -> Void
+    private var onEndBoneyard: () -> Void
 
-    init(_ block: String) {
+    init(_ block: String, onStartBoneyard: @escaping ()->Void, onEndBoneyard: @escaping ()->Void ) {
         self.block = block
+        self.onStartBoneyard = onStartBoneyard
+        self.onEndBoneyard = onEndBoneyard
         lexer = Lexer(raw: block, separator: "\n")
     }
 
@@ -22,11 +26,20 @@ class FountainBlockParser {
             return []
         }
         var result: [FountainNode] = []
+        
+        if let newBlock = boneyardRemover(block) {
+            print("new block: \(newBlock)")
+            if (newBlock.isEmpty) {
+                return []
+            }
+            self.lexer = Lexer(raw: newBlock, separator: "\n")!
+        }
+        
         while let line = lexer.next() {
 //            print("lexer index: \(lexer.Index)")
 //            print("lexer count: \(lexer.count)")
 //            print("block: \(block)")
-//            print("line: \(line)")
+            print("line: \(line)")
                         
             // title page node
             if let node = isTitlePageNode(line) {
@@ -118,6 +131,20 @@ class FountainBlockParser {
         }
         
         return result
+    }
+    
+    func boneyardRemover(_ block: String) -> String? {
+        if (block.contains("/*") && block.contains("*/")) {
+            if let withoutBoneyard = block.removeSlice(from: "/*", to: "*/", alsoRemoveFromTo: true) {
+                return withoutBoneyard
+            }
+        } else if (block.contains("/*")) {
+//            print("boneyard started only")
+//            let newBlock = block.remove
+        } else if (block.contains("*/")) {
+//            print("boneyard ended only")
+        }
+        return nil
     }
     
     func isTitlePageNode(_ line: String) -> TitlePageNode? {
@@ -384,5 +411,21 @@ extension String {
     // but leaves spaces between characters
     var withoutSpaces: String {
         return self.trimmingCharacters(in: .whitespaces)
+    }
+    
+    func removeSlice(from: String, to: String, alsoRemoveFromTo: Bool) -> String? {
+        var newString = self
+        if (alsoRemoveFromTo) {
+            guard let rangeFrom = range(of: from)?.lowerBound else { return nil }
+            guard let rangeTo = self[rangeFrom...].range(of: to)?.upperBound else { return nil }
+            let range = rangeFrom..<rangeTo
+            newString.removeSubrange(range)
+        } else {
+            guard let rangeFrom = range(of: from)?.upperBound else { return nil }
+            guard let rangeTo = self[rangeFrom...].range(of: to)?.lowerBound else { return nil }
+            let range = rangeFrom..<rangeTo
+            newString.removeSubrange(range)
+        }
+        return newString
     }
 }

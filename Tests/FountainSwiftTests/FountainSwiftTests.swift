@@ -263,6 +263,45 @@ final class FountainSwiftTests: XCTestCase {
         ])
     }
     
+    func testParsing_boneyard_easy() {
+        let text = """
+        INT. HOUSE
+        
+        /*
+        this is boneyard
+        */
+        
+        BILL
+        some dialogue
+        """
+        let parser = FountainParser(text)
+        let nodes = parser.parse()
+        XCTAssertEqual(nodes, [
+            .sceneHeading("INT. HOUSE"),
+            .character("BILL"),
+            .dialogue("some dialogue"),
+        ])
+    }
+    
+    func testParsing_boneyard_hard() {
+        let text = """
+        INT. HOUSE
+        
+        What the fuck /* this is an inline boneyard */man.
+        
+        BILL
+        some dialogue
+        """
+        let parser = FountainParser(text)
+        let nodes = parser.parse()
+        XCTAssertEqual(nodes, [
+            .sceneHeading("INT. HOUSE"),
+            .action("What the fuck man."),
+            .character("BILL"),
+            .dialogue("some dialogue"),
+        ])
+    }
+    
     func testParsing_pageBreak() {
         let text = """
         

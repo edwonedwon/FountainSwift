@@ -9,6 +9,7 @@ import Foundation
 
 class FountainParser {
     private let text: String
+    private var isBoneyardSpan = false
     
     init(_ text: String) {
         self.text = text
@@ -22,7 +23,16 @@ class FountainParser {
         var result: [FountainNode] = []
         // iterate the lexems/blocks until there are no more available
         while let text = lexer.next() {
-            result += FountainBlockParser(text).parse()
+            let resultToAdd = FountainBlockParser(text,
+            onStartBoneyard: {
+                self.isBoneyardSpan = true
+            }, onEndBoneyard: {
+                self.isBoneyardSpan = false
+            }).parse()
+            
+            if (!isBoneyardSpan) {
+                result += resultToAdd
+            }
         }
         return result
     }
