@@ -9,7 +9,7 @@ import Foundation
 
 class FountainBlockParser {
     private let block: String
-    private var lexer: Lexer?
+    private let lexer: Lexer?
     private var titlePage: [TitlePageNode] = []
     private var onStartBoneyard: () -> Void
     private var onEndBoneyard: () -> Void
@@ -27,15 +27,16 @@ class FountainBlockParser {
         }
         var result: [FountainNode] = []
         
+        var thisLexer = lexer
         if let newBlock = boneyardRemover(block) {
             print("new block: \(newBlock)")
             if (newBlock.isEmpty) {
                 return []
             }
-            self.lexer = Lexer(raw: newBlock, separator: "\n")!
+            thisLexer = Lexer(raw: newBlock, separator: "\n")!
         }
         
-        while let line = lexer.next() {
+        while let line = thisLexer.next() {
 //            print("lexer index: \(lexer.Index)")
 //            print("lexer count: \(lexer.count)")
 //            print("block: \(block)")

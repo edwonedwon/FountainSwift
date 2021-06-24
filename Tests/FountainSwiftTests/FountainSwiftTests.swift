@@ -283,7 +283,7 @@ final class FountainSwiftTests: XCTestCase {
         ])
     }
     
-    func testParsing_boneyard_hard() {
+    func testParsing_boneyard_medium() {
         let text = """
         INT. HOUSE
         
